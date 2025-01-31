@@ -39,11 +39,6 @@
   <lib desc="#Input/Output-Extra" name="10"/>
   <lib desc="#Soc" name="11"/>
   <lib desc="#HDL-IP" name="12"/>
-  <lib desc="file#Relay_async.circ" name="13">
-    <tool name="SPDT_CO">
-      <a name="facing" val="west"/>
-    </tool>
-  </lib>
   <main name="main"/>
   <options>
     <a name="gateUndefined" val="ignore"/>
@@ -95,14 +90,20 @@
       <a name="appearance" val="NewPins"/>
       <a name="label" val="A"/>
     </comp>
-    <comp lib="0" loc="(220,790)" name="Pin">
+    <comp lib="0" loc="(220,770)" name="Pin">
       <a name="appearance" val="NewPins"/>
       <a name="label" val="B"/>
+    </comp>
+    <comp lib="0" loc="(220,790)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="label" val="nB"/>
     </comp>
     <comp lib="0" loc="(220,820)" name="Pin">
       <a name="appearance" val="NewPins"/>
       <a name="label" val="CI"/>
     </comp>
+    <comp lib="0" loc="(310,840)" name="Power"/>
+    <comp lib="0" loc="(390,820)" name="Ground"/>
     <comp lib="0" loc="(540,730)" name="Pin">
       <a name="appearance" val="NewPins"/>
       <a name="facing" val="west"/>
@@ -118,12 +119,6 @@
     <comp lib="1" loc="(530,780)" name="OR Gate">
       <a name="size" val="30"/>
     </comp>
-    <comp lib="13" loc="(280,410)" name="SPDT_CI"/>
-    <comp lib="13" loc="(280,500)" name="DPDT_CICI"/>
-    <comp lib="13" loc="(350,500)" name="DPDT_CICO"/>
-    <comp lib="13" loc="(420,500)" name="DPDT_COCI"/>
-    <comp lib="13" loc="(490,410)" name="SPDT_CO"/>
-    <comp lib="13" loc="(490,500)" name="DPDT_COCO"/>
     <comp lib="4" loc="(220,240)" name="D Flip-Flop">
       <a name="appearance" val="logisim_evolution"/>
     </comp>
@@ -133,8 +128,15 @@
       <a name="text" val="FA old"/>
     </comp>
     <comp loc="(260,180)" name="D_Register"/>
+    <comp loc="(260,370)" name="SPDT_CI"/>
+    <comp loc="(260,460)" name="DPDT_CICI"/>
+    <comp loc="(330,460)" name="DPDT_CICO"/>
     <comp loc="(330,750)" name="Half_Add"/>
+    <comp loc="(360,850)" name="SPDT_CI"/>
+    <comp loc="(400,460)" name="DPDT_COCI"/>
     <comp loc="(430,220)" name="ADD"/>
+    <comp loc="(470,370)" name="SPDT_CO"/>
+    <comp loc="(470,460)" name="DPDT_COCO"/>
     <comp loc="(480,730)" name="Half_Add"/>
     <comp loc="(510,220)" name="Half_Add"/>
     <comp loc="(580,400)" name="MUX"/>
@@ -144,16 +146,586 @@
     <comp loc="(770,220)" name="ADD_SUB"/>
     <comp loc="(770,450)" name="INC_DEC"/>
     <wire from="(220,750)" to="(270,750)"/>
+    <wire from="(220,770)" to="(270,770)"/>
     <wire from="(220,790)" to="(270,790)"/>
-    <wire from="(220,820)" to="(410,820)"/>
+    <wire from="(220,820)" to="(330,820)"/>
+    <wire from="(310,840)" to="(310,850)"/>
+    <wire from="(310,850)" to="(330,850)"/>
     <wire from="(330,730)" to="(330,750)"/>
     <wire from="(330,730)" to="(420,730)"/>
     <wire from="(330,790)" to="(500,790)"/>
-    <wire from="(410,770)" to="(410,820)"/>
+    <wire from="(380,820)" to="(390,820)"/>
+    <wire from="(380,840)" to="(400,840)"/>
+    <wire from="(380,860)" to="(410,860)"/>
+    <wire from="(400,750)" to="(400,840)"/>
+    <wire from="(400,750)" to="(420,750)"/>
+    <wire from="(410,770)" to="(410,860)"/>
     <wire from="(410,770)" to="(420,770)"/>
     <wire from="(480,730)" to="(540,730)"/>
     <wire from="(480,770)" to="(500,770)"/>
     <wire from="(530,780)" to="(540,780)"/>
+  </circuit>
+  <circuit name="SPDT_CI">
+    <a name="appearance" val="custom"/>
+    <a name="circuit" val="SPDT_CI"/>
+    <a name="circuitnamedboxfixedsize" val="true"/>
+    <a name="simulationFrequency" val="1.0"/>
+    <appear>
+      <rect fill="#ffffff" height="60" stroke="#000000" stroke-width="2" width="50" x="50" y="30"/>
+      <polyline fill="none" points="59,40 51,40" stroke="#000000" stroke-width="2"/>
+      <path d="M60,41 Q65,52 70,41" fill="none" stroke="#000000" stroke-width="2"/>
+      <path d="M70,41 Q75,52 80,41" fill="none" stroke="#000000" stroke-width="2"/>
+      <path d="M80,41 Q85,52 90,41" fill="none" stroke="#000000" stroke-width="2"/>
+      <polyline fill="none" points="91,40 99,40" stroke="#000000" stroke-width="2"/>
+      <ellipse cx="85" cy="60" rx="2" ry="2" stroke="#000000"/>
+      <polyline fill="none" points="85,80 64,70" stroke="#000000" stroke-width="2"/>
+      <polyline fill="none" points="75,57 75,61" stroke="#000000"/>
+      <ellipse cx="85" cy="80" rx="2" ry="2" stroke="#000000"/>
+      <polyline fill="none" points="75,49 75,53" stroke="#000000"/>
+      <polyline fill="none" points="51,70 63,70" stroke="#000000" stroke-width="2"/>
+      <polyline fill="none" points="86,60 99,60" stroke="#000000" stroke-width="2"/>
+      <polyline fill="none" points="86,80 99,80" stroke="#000000" stroke-width="2"/>
+      <ellipse cx="64" cy="70" fill="#ffffff" rx="2" ry="2" stroke="#000000"/>
+      <polyline fill="none" points="75,65 75,69" stroke="#000000"/>
+      <polygon points="58,66 62,70 58,74" stroke="#000000"/>
+      <polygon points="95,56 99,60 95,64" stroke="#000000"/>
+      <polygon points="95,76 99,80 95,84" stroke="#000000"/>
+      <circ-anchor facing="east" x="80" y="70"/>
+      <circ-port dir="in" pin="210,310" x="50" y="40"/>
+      <circ-port dir="in" pin="210,330" x="100" y="40"/>
+      <circ-port dir="in" pin="250,280" x="50" y="70"/>
+      <circ-port dir="out" pin="280,270" x="100" y="80"/>
+      <circ-port dir="out" pin="280,290" x="100" y="60"/>
+    </appear>
+    <comp lib="0" loc="(210,310)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="label" val="coil_L"/>
+    </comp>
+    <comp lib="0" loc="(210,330)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="label" val="coil_R"/>
+    </comp>
+    <comp lib="0" loc="(250,280)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="label" val="C1"/>
+    </comp>
+    <comp lib="0" loc="(280,270)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="facing" val="west"/>
+      <a name="label" val="NC1"/>
+      <a name="output" val="true"/>
+    </comp>
+    <comp lib="0" loc="(280,290)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="facing" val="west"/>
+      <a name="label" val="NO1"/>
+      <a name="output" val="true"/>
+    </comp>
+    <comp lib="1" loc="(260,320)" name="XOR Gate">
+      <a name="size" val="30"/>
+    </comp>
+    <comp lib="2" loc="(250,280)" name="Demultiplexer"/>
+    <wire from="(210,310)" to="(220,310)"/>
+    <wire from="(210,330)" to="(220,330)"/>
+    <wire from="(260,320)" to="(270,320)"/>
+    <wire from="(270,300)" to="(270,320)"/>
+  </circuit>
+  <circuit name="SPDT_CO">
+    <a name="appearance" val="custom"/>
+    <a name="circuit" val="SPDT_CO"/>
+    <a name="circuitnamedboxfixedsize" val="true"/>
+    <a name="simulationFrequency" val="1.0"/>
+    <appear>
+      <rect fill="#ffffff" height="60" stroke="#000000" stroke-width="2" width="50" x="50" y="30"/>
+      <polyline fill="none" points="51,70 63,70" stroke="#000000" stroke-width="2"/>
+      <ellipse cx="85" cy="60" rx="2" ry="2" stroke="#000000"/>
+      <polyline fill="none" points="85,80 64,70" stroke="#000000" stroke-width="2"/>
+      <polyline fill="none" points="75,57 75,61" stroke="#000000"/>
+      <ellipse cx="85" cy="80" rx="2" ry="2" stroke="#000000"/>
+      <ellipse cx="64" cy="70" fill="#ffffff" rx="2" ry="2" stroke="#000000"/>
+      <polyline fill="none" points="86,60 99,60" stroke="#000000" stroke-width="2"/>
+      <polyline fill="none" points="86,80 99,80" stroke="#000000" stroke-width="2"/>
+      <polyline fill="none" points="75,65 75,69" stroke="#000000"/>
+      <polyline fill="none" points="75,49 75,53" stroke="#000000"/>
+      <polygon points="55,66 51,70 55,74" stroke="#000000"/>
+      <polygon points="91,56 87,60 91,64" stroke="#000000"/>
+      <polygon points="91,76 87,80 91,84" stroke="#000000"/>
+      <path d="M80,41 Q85,52 90,41" fill="none" stroke="#000000" stroke-width="2"/>
+      <polyline fill="none" points="91,40 99,40" stroke="#000000" stroke-width="2"/>
+      <polyline fill="none" points="59,40 51,40" stroke="#000000" stroke-width="2"/>
+      <path d="M60,41 Q65,52 70,41" fill="none" stroke="#000000" stroke-width="2"/>
+      <path d="M70,41 Q75,52 80,41" fill="none" stroke="#000000" stroke-width="2"/>
+      <circ-anchor facing="east" x="80" y="70"/>
+      <circ-port dir="in" pin="210,310" x="50" y="40"/>
+      <circ-port dir="in" pin="210,330" x="100" y="40"/>
+      <circ-port dir="in" pin="280,270" x="100" y="80"/>
+      <circ-port dir="in" pin="280,290" x="100" y="60"/>
+      <circ-port dir="out" pin="250,280" x="50" y="70"/>
+    </appear>
+    <comp lib="0" loc="(210,310)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="label" val="coil_L"/>
+    </comp>
+    <comp lib="0" loc="(210,330)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="label" val="coil_R"/>
+    </comp>
+    <comp lib="0" loc="(250,280)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="label" val="C1"/>
+      <a name="output" val="true"/>
+    </comp>
+    <comp lib="0" loc="(280,270)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="facing" val="west"/>
+      <a name="label" val="NC1"/>
+    </comp>
+    <comp lib="0" loc="(280,290)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="facing" val="west"/>
+      <a name="label" val="NO1"/>
+    </comp>
+    <comp lib="1" loc="(260,320)" name="XOR Gate">
+      <a name="size" val="30"/>
+    </comp>
+    <comp lib="2" loc="(250,280)" name="Multiplexer">
+      <a name="facing" val="west"/>
+    </comp>
+    <wire from="(210,310)" to="(220,310)"/>
+    <wire from="(210,330)" to="(220,330)"/>
+    <wire from="(260,320)" to="(270,320)"/>
+    <wire from="(270,300)" to="(270,320)"/>
+  </circuit>
+  <circuit name="DPDT_CICI">
+    <a name="appearance" val="custom"/>
+    <a name="circuit" val="DPDT_CICI"/>
+    <a name="circuitnamedboxfixedsize" val="true"/>
+    <a name="simulationFrequency" val="1.0"/>
+    <appear>
+      <rect fill="#ffffff" height="100" stroke="#000000" stroke-width="2" width="50" x="50" y="30"/>
+      <polyline fill="none" points="51,70 63,70" stroke="#000000" stroke-width="2"/>
+      <polygon points="95,56 99,60 95,64" stroke="#000000"/>
+      <polygon points="95,76 99,80 95,84" stroke="#000000"/>
+      <ellipse cx="85" cy="60" rx="2" ry="2" stroke="#000000"/>
+      <polyline fill="none" points="85,80 64,70" stroke="#000000" stroke-width="2"/>
+      <polyline fill="none" points="75,57 75,61" stroke="#000000"/>
+      <ellipse cx="85" cy="80" rx="2" ry="2" stroke="#000000"/>
+      <ellipse cx="64" cy="70" fill="#ffffff" rx="2" ry="2" stroke="#000000"/>
+      <polyline fill="none" points="86,60 99,60" stroke="#000000" stroke-width="2"/>
+      <polyline fill="none" points="86,80 99,80" stroke="#000000" stroke-width="2"/>
+      <polyline fill="none" points="75,65 75,69" stroke="#000000"/>
+      <polyline fill="none" points="75,49 75,53" stroke="#000000"/>
+      <polygon points="58,66 62,70 58,74" stroke="#000000"/>
+      <polyline fill="none" points="75,65 75,69" stroke="#000000"/>
+      <polyline fill="none" points="75,57 75,61" stroke="#000000"/>
+      <polyline fill="none" points="85,120 64,110" stroke="#000000" stroke-width="2"/>
+      <polyline fill="none" points="86,120 99,120" stroke="#000000" stroke-width="2"/>
+      <polyline fill="none" points="75,105 75,109" stroke="#000000"/>
+      <ellipse cx="85" cy="100" rx="2" ry="2" stroke="#000000"/>
+      <polyline fill="none" points="75,97 75,101" stroke="#000000"/>
+      <polygon points="58,106 62,110 58,114" stroke="#000000"/>
+      <ellipse cx="85" cy="120" rx="2" ry="2" stroke="#000000"/>
+      <polygon points="95,116 99,120 95,124" stroke="#000000"/>
+      <polygon points="95,96 99,100 95,104" stroke="#000000"/>
+      <polyline fill="none" points="86,100 99,100" stroke="#000000" stroke-width="2"/>
+      <polyline fill="none" points="51,110 63,110" stroke="#000000" stroke-width="2"/>
+      <ellipse cx="64" cy="110" fill="#ffffff" rx="2" ry="2" stroke="#000000"/>
+      <polyline fill="none" points="75,73 75,77" stroke="#000000"/>
+      <polyline fill="none" points="75,89 75,93" stroke="#000000"/>
+      <polyline fill="none" points="75,81 75,85" stroke="#000000"/>
+      <polyline fill="none" points="75,81 75,85" stroke="#000000"/>
+      <polyline fill="none" points="75,89 75,93" stroke="#000000"/>
+      <path d="M80,41 Q85,52 90,41" fill="none" stroke="#000000" stroke-width="2"/>
+      <polyline fill="none" points="91,40 99,40" stroke="#000000" stroke-width="2"/>
+      <polyline fill="none" points="59,40 51,40" stroke="#000000" stroke-width="2"/>
+      <path d="M60,41 Q65,52 70,41" fill="none" stroke="#000000" stroke-width="2"/>
+      <path d="M70,41 Q75,52 80,41" fill="none" stroke="#000000" stroke-width="2"/>
+      <circ-anchor facing="east" x="80" y="90"/>
+      <circ-port dir="in" pin="200,300" x="50" y="40"/>
+      <circ-port dir="in" pin="200,320" x="100" y="40"/>
+      <circ-port dir="in" pin="250,280" x="50" y="70"/>
+      <circ-port dir="in" pin="250,340" x="50" y="110"/>
+      <circ-port dir="out" pin="280,270" x="100" y="80"/>
+      <circ-port dir="out" pin="280,290" x="100" y="60"/>
+      <circ-port dir="out" pin="280,330" x="100" y="120"/>
+      <circ-port dir="out" pin="280,350" x="100" y="100"/>
+    </appear>
+    <comp lib="0" loc="(200,300)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="label" val="coil_L"/>
+    </comp>
+    <comp lib="0" loc="(200,320)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="label" val="coil_R"/>
+    </comp>
+    <comp lib="0" loc="(250,280)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="label" val="C1"/>
+    </comp>
+    <comp lib="0" loc="(250,340)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="label" val="C2"/>
+    </comp>
+    <comp lib="0" loc="(280,270)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="facing" val="west"/>
+      <a name="label" val="NC1"/>
+      <a name="output" val="true"/>
+    </comp>
+    <comp lib="0" loc="(280,290)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="facing" val="west"/>
+      <a name="label" val="NO1"/>
+      <a name="output" val="true"/>
+    </comp>
+    <comp lib="0" loc="(280,330)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="facing" val="west"/>
+      <a name="label" val="NC2"/>
+      <a name="output" val="true"/>
+    </comp>
+    <comp lib="0" loc="(280,350)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="facing" val="west"/>
+      <a name="label" val="NO2"/>
+      <a name="output" val="true"/>
+    </comp>
+    <comp lib="1" loc="(250,310)" name="XOR Gate">
+      <a name="size" val="30"/>
+    </comp>
+    <comp lib="2" loc="(250,280)" name="Demultiplexer"/>
+    <comp lib="2" loc="(250,340)" name="Demultiplexer">
+      <a name="selloc" val="tr"/>
+    </comp>
+    <wire from="(200,300)" to="(210,300)"/>
+    <wire from="(200,320)" to="(210,320)"/>
+    <wire from="(250,310)" to="(270,310)"/>
+    <wire from="(270,300)" to="(270,310)"/>
+    <wire from="(270,310)" to="(270,320)"/>
+  </circuit>
+  <circuit name="DPDT_CICO">
+    <a name="appearance" val="custom"/>
+    <a name="circuit" val="DPDT_CICO"/>
+    <a name="circuitnamedboxfixedsize" val="true"/>
+    <a name="simulationFrequency" val="1.0"/>
+    <appear>
+      <rect fill="#ffffff" height="100" stroke="#000000" stroke-width="2" width="50" x="50" y="30"/>
+      <ellipse cx="64" cy="70" fill="#ffffff" rx="2" ry="2" stroke="#000000"/>
+      <polyline fill="none" points="75,73 75,77" stroke="#000000"/>
+      <polyline fill="none" points="75,97 75,101" stroke="#000000"/>
+      <polyline fill="none" points="75,49 75,53" stroke="#000000"/>
+      <polyline fill="none" points="86,80 99,80" stroke="#000000" stroke-width="2"/>
+      <ellipse cx="64" cy="110" fill="#ffffff" rx="2" ry="2" stroke="#000000"/>
+      <polyline fill="none" points="75,65 75,69" stroke="#000000"/>
+      <ellipse cx="85" cy="60" rx="2" ry="2" stroke="#000000"/>
+      <polyline fill="none" points="86,120 99,120" stroke="#000000" stroke-width="2"/>
+      <polyline fill="none" points="85,80 67,71" stroke="#000000" stroke-width="2"/>
+      <polyline fill="none" points="75,81 75,85" stroke="#000000"/>
+      <polygon points="95,56 99,60 95,64" stroke="#000000"/>
+      <polyline fill="none" points="51,110 61,110" stroke="#000000" stroke-width="2"/>
+      <polyline fill="none" points="75,57 75,61" stroke="#000000"/>
+      <polyline fill="none" points="75,89 75,93" stroke="#000000"/>
+      <polyline fill="none" points="86,60 99,60" stroke="#000000" stroke-width="2"/>
+      <polyline fill="none" points="75,89 75,93" stroke="#000000"/>
+      <ellipse cx="85" cy="100" rx="2" ry="2" stroke="#000000"/>
+      <polygon points="58,66 62,70 58,74" stroke="#000000"/>
+      <ellipse cx="85" cy="80" rx="2" ry="2" stroke="#000000"/>
+      <polyline fill="none" points="75,57 75,61" stroke="#000000"/>
+      <polygon points="95,76 99,80 95,84" stroke="#000000"/>
+      <polyline fill="none" points="75,105 75,109" stroke="#000000"/>
+      <polyline fill="none" points="85,120 67,111" stroke="#000000" stroke-width="2"/>
+      <polyline fill="none" points="86,100 99,100" stroke="#000000" stroke-width="2"/>
+      <ellipse cx="85" cy="120" rx="2" ry="2" stroke="#000000"/>
+      <polyline fill="none" points="75,81 75,85" stroke="#000000"/>
+      <polyline fill="none" points="51,70 61,70" stroke="#000000" stroke-width="2"/>
+      <polyline fill="none" points="75,65 75,69" stroke="#000000"/>
+      <polygon points="91,96 87,100 91,104" stroke="#000000"/>
+      <polygon points="91,116 87,120 91,124" stroke="#000000"/>
+      <polygon points="91,116 87,120 91,124" stroke="#000000"/>
+      <polygon points="55,106 51,110 55,114" stroke="#000000"/>
+      <path d="M80,41 Q85,52 90,41" fill="none" stroke="#000000" stroke-width="2"/>
+      <polyline fill="none" points="91,40 99,40" stroke="#000000" stroke-width="2"/>
+      <polyline fill="none" points="59,40 51,40" stroke="#000000" stroke-width="2"/>
+      <path d="M60,41 Q65,52 70,41" fill="none" stroke="#000000" stroke-width="2"/>
+      <path d="M70,41 Q75,52 80,41" fill="none" stroke="#000000" stroke-width="2"/>
+      <circ-anchor facing="east" x="80" y="90"/>
+      <circ-port dir="in" pin="200,300" x="50" y="40"/>
+      <circ-port dir="in" pin="200,320" x="100" y="40"/>
+      <circ-port dir="in" pin="250,280" x="50" y="70"/>
+      <circ-port dir="in" pin="280,330" x="100" y="120"/>
+      <circ-port dir="in" pin="280,350" x="100" y="100"/>
+      <circ-port dir="out" pin="250,340" x="50" y="110"/>
+      <circ-port dir="out" pin="280,270" x="100" y="80"/>
+      <circ-port dir="out" pin="280,290" x="100" y="60"/>
+    </appear>
+    <comp lib="0" loc="(200,300)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="label" val="coil_L"/>
+    </comp>
+    <comp lib="0" loc="(200,320)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="label" val="coil_R"/>
+    </comp>
+    <comp lib="0" loc="(250,280)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="label" val="C1"/>
+    </comp>
+    <comp lib="0" loc="(250,340)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="label" val="C2"/>
+      <a name="output" val="true"/>
+    </comp>
+    <comp lib="0" loc="(280,270)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="facing" val="west"/>
+      <a name="label" val="NC1"/>
+      <a name="output" val="true"/>
+    </comp>
+    <comp lib="0" loc="(280,290)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="facing" val="west"/>
+      <a name="label" val="NO1"/>
+      <a name="output" val="true"/>
+    </comp>
+    <comp lib="0" loc="(280,330)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="facing" val="west"/>
+      <a name="label" val="NC2"/>
+    </comp>
+    <comp lib="0" loc="(280,350)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="facing" val="west"/>
+      <a name="label" val="NO2"/>
+    </comp>
+    <comp lib="1" loc="(250,310)" name="XOR Gate">
+      <a name="size" val="30"/>
+    </comp>
+    <comp lib="2" loc="(250,280)" name="Demultiplexer"/>
+    <comp lib="2" loc="(250,340)" name="Multiplexer">
+      <a name="facing" val="west"/>
+      <a name="selloc" val="tr"/>
+    </comp>
+    <wire from="(200,300)" to="(210,300)"/>
+    <wire from="(200,320)" to="(210,320)"/>
+    <wire from="(250,310)" to="(270,310)"/>
+    <wire from="(270,300)" to="(270,310)"/>
+    <wire from="(270,310)" to="(270,320)"/>
+  </circuit>
+  <circuit name="DPDT_COCI">
+    <a name="appearance" val="custom"/>
+    <a name="circuit" val="DPDT_COCI"/>
+    <a name="circuitnamedboxfixedsize" val="true"/>
+    <a name="simulationFrequency" val="1.0"/>
+    <appear>
+      <rect fill="#ffffff" height="100" stroke="#000000" stroke-width="2" width="50" x="50" y="30"/>
+      <polyline fill="none" points="85,80 64,70" stroke="#000000" stroke-width="2"/>
+      <polyline fill="none" points="75,89 75,93" stroke="#000000"/>
+      <polyline fill="none" points="75,57 75,61" stroke="#000000"/>
+      <ellipse cx="64" cy="70" fill="#ffffff" rx="2" ry="2" stroke="#000000"/>
+      <polyline fill="none" points="51,110 61,110" stroke="#000000" stroke-width="2"/>
+      <polygon points="95,96 99,100 95,104" stroke="#000000"/>
+      <ellipse cx="85" cy="120" rx="2" ry="2" stroke="#000000"/>
+      <polyline fill="none" points="75,73 75,77" stroke="#000000"/>
+      <polygon points="95,116 99,120 95,124" stroke="#000000"/>
+      <polyline fill="none" points="86,60 99,60" stroke="#000000" stroke-width="2"/>
+      <ellipse cx="85" cy="60" rx="2" ry="2" stroke="#000000"/>
+      <polyline fill="none" points="75,65 75,69" stroke="#000000"/>
+      <polyline fill="none" points="75,57 75,61" stroke="#000000"/>
+      <polyline fill="none" points="75,65 75,69" stroke="#000000"/>
+      <polyline fill="none" points="86,100 99,100" stroke="#000000" stroke-width="2"/>
+      <ellipse cx="85" cy="80" rx="2" ry="2" stroke="#000000"/>
+      <polyline fill="none" points="75,97 75,101" stroke="#000000"/>
+      <polyline fill="none" points="51,70 61,70" stroke="#000000" stroke-width="2"/>
+      <polyline fill="none" points="75,49 75,53" stroke="#000000"/>
+      <polyline fill="none" points="75,81 75,85" stroke="#000000"/>
+      <polyline fill="none" points="86,80 99,80" stroke="#000000" stroke-width="2"/>
+      <polygon points="58,106 62,110 58,114" stroke="#000000"/>
+      <ellipse cx="64" cy="110" fill="#ffffff" rx="2" ry="2" stroke="#000000"/>
+      <polyline fill="none" points="85,120 67,111" stroke="#000000" stroke-width="2"/>
+      <polyline fill="none" points="75,89 75,93" stroke="#000000"/>
+      <polyline fill="none" points="75,81 75,85" stroke="#000000"/>
+      <polyline fill="none" points="75,105 75,109" stroke="#000000"/>
+      <ellipse cx="85" cy="100" rx="2" ry="2" stroke="#000000"/>
+      <polyline fill="none" points="86,120 99,120" stroke="#000000" stroke-width="2"/>
+      <polygon points="91,76 87,80 91,84" stroke="#000000"/>
+      <polygon points="91,56 87,60 91,64" stroke="#000000"/>
+      <polygon points="55,66 51,70 55,74" stroke="#000000"/>
+      <path d="M80,41 Q85,52 90,41" fill="none" stroke="#000000" stroke-width="2"/>
+      <polyline fill="none" points="91,40 99,40" stroke="#000000" stroke-width="2"/>
+      <polyline fill="none" points="59,40 51,40" stroke="#000000" stroke-width="2"/>
+      <path d="M60,41 Q65,52 70,41" fill="none" stroke="#000000" stroke-width="2"/>
+      <path d="M70,41 Q75,52 80,41" fill="none" stroke="#000000" stroke-width="2"/>
+      <circ-anchor facing="east" x="80" y="90"/>
+      <circ-port dir="in" pin="200,300" x="50" y="40"/>
+      <circ-port dir="in" pin="200,320" x="100" y="40"/>
+      <circ-port dir="in" pin="250,340" x="50" y="110"/>
+      <circ-port dir="in" pin="280,270" x="100" y="80"/>
+      <circ-port dir="in" pin="280,290" x="100" y="60"/>
+      <circ-port dir="out" pin="250,280" x="50" y="70"/>
+      <circ-port dir="out" pin="280,330" x="100" y="120"/>
+      <circ-port dir="out" pin="280,350" x="100" y="100"/>
+    </appear>
+    <comp lib="0" loc="(200,300)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="label" val="coil_L"/>
+    </comp>
+    <comp lib="0" loc="(200,320)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="label" val="coil_R"/>
+    </comp>
+    <comp lib="0" loc="(250,280)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="label" val="C1"/>
+      <a name="output" val="true"/>
+    </comp>
+    <comp lib="0" loc="(250,340)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="label" val="C2"/>
+    </comp>
+    <comp lib="0" loc="(280,270)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="facing" val="west"/>
+      <a name="label" val="NC1"/>
+    </comp>
+    <comp lib="0" loc="(280,290)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="facing" val="west"/>
+      <a name="label" val="NO1"/>
+    </comp>
+    <comp lib="0" loc="(280,330)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="facing" val="west"/>
+      <a name="label" val="NC2"/>
+      <a name="output" val="true"/>
+    </comp>
+    <comp lib="0" loc="(280,350)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="facing" val="west"/>
+      <a name="label" val="NO2"/>
+      <a name="output" val="true"/>
+    </comp>
+    <comp lib="1" loc="(250,310)" name="XOR Gate">
+      <a name="size" val="30"/>
+    </comp>
+    <comp lib="2" loc="(250,280)" name="Multiplexer">
+      <a name="facing" val="west"/>
+    </comp>
+    <comp lib="2" loc="(250,340)" name="Demultiplexer">
+      <a name="selloc" val="tr"/>
+    </comp>
+    <wire from="(200,300)" to="(210,300)"/>
+    <wire from="(200,320)" to="(210,320)"/>
+    <wire from="(250,310)" to="(270,310)"/>
+    <wire from="(270,300)" to="(270,310)"/>
+    <wire from="(270,310)" to="(270,320)"/>
+  </circuit>
+  <circuit name="DPDT_COCO">
+    <a name="appearance" val="custom"/>
+    <a name="circuit" val="DPDT_COCO"/>
+    <a name="circuitnamedboxfixedsize" val="true"/>
+    <a name="simulationFrequency" val="1.0"/>
+    <appear>
+      <rect fill="#ffffff" height="100" stroke="#000000" stroke-width="2" width="50" x="50" y="30"/>
+      <ellipse cx="85" cy="60" rx="2" ry="2" stroke="#000000"/>
+      <ellipse cx="64" cy="110" fill="#ffffff" rx="2" ry="2" stroke="#000000"/>
+      <ellipse cx="85" cy="120" rx="2" ry="2" stroke="#000000"/>
+      <polyline fill="none" points="75,57 75,61" stroke="#000000"/>
+      <polygon points="91,56 87,60 91,64" stroke="#000000"/>
+      <polyline fill="none" points="75,57 75,61" stroke="#000000"/>
+      <polyline fill="none" points="86,80 99,80" stroke="#000000" stroke-width="2"/>
+      <polyline fill="none" points="75,65 75,69" stroke="#000000"/>
+      <polyline fill="none" points="75,89 75,93" stroke="#000000"/>
+      <polyline fill="none" points="86,100 99,100" stroke="#000000" stroke-width="2"/>
+      <polyline fill="none" points="75,49 75,53" stroke="#000000"/>
+      <ellipse cx="85" cy="100" rx="2" ry="2" stroke="#000000"/>
+      <polyline fill="none" points="86,60 99,60" stroke="#000000" stroke-width="2"/>
+      <polyline fill="none" points="85,120 67,111" stroke="#000000" stroke-width="2"/>
+      <polyline fill="none" points="75,81 75,85" stroke="#000000"/>
+      <polyline fill="none" points="51,110 61,110" stroke="#000000" stroke-width="2"/>
+      <polyline fill="none" points="75,97 75,101" stroke="#000000"/>
+      <polygon points="91,76 87,80 91,84" stroke="#000000"/>
+      <polyline fill="none" points="75,73 75,77" stroke="#000000"/>
+      <polyline fill="none" points="75,65 75,69" stroke="#000000"/>
+      <polyline fill="none" points="75,105 75,109" stroke="#000000"/>
+      <polygon points="55,66 51,70 55,74" stroke="#000000"/>
+      <polyline fill="none" points="85,80 64,70" stroke="#000000" stroke-width="2"/>
+      <polyline fill="none" points="51,70 61,70" stroke="#000000" stroke-width="2"/>
+      <ellipse cx="85" cy="80" rx="2" ry="2" stroke="#000000"/>
+      <polyline fill="none" points="86,120 99,120" stroke="#000000" stroke-width="2"/>
+      <ellipse cx="64" cy="70" fill="#ffffff" rx="2" ry="2" stroke="#000000"/>
+      <polyline fill="none" points="75,81 75,85" stroke="#000000"/>
+      <polyline fill="none" points="75,89 75,93" stroke="#000000"/>
+      <polygon points="91,116 87,120 91,124" stroke="#000000"/>
+      <polygon points="91,96 87,100 91,104" stroke="#000000"/>
+      <polygon points="55,106 51,110 55,114" stroke="#000000"/>
+      <path d="M80,41 Q85,52 90,41" fill="none" stroke="#000000" stroke-width="2"/>
+      <polyline fill="none" points="91,40 99,40" stroke="#000000" stroke-width="2"/>
+      <polyline fill="none" points="59,40 51,40" stroke="#000000" stroke-width="2"/>
+      <path d="M60,41 Q65,52 70,41" fill="none" stroke="#000000" stroke-width="2"/>
+      <path d="M70,41 Q75,52 80,41" fill="none" stroke="#000000" stroke-width="2"/>
+      <circ-anchor facing="east" x="80" y="90"/>
+      <circ-port dir="in" pin="200,300" x="50" y="40"/>
+      <circ-port dir="in" pin="200,320" x="100" y="40"/>
+      <circ-port dir="in" pin="280,270" x="100" y="80"/>
+      <circ-port dir="in" pin="280,290" x="100" y="60"/>
+      <circ-port dir="in" pin="280,330" x="100" y="120"/>
+      <circ-port dir="in" pin="280,350" x="100" y="100"/>
+      <circ-port dir="out" pin="250,280" x="50" y="70"/>
+      <circ-port dir="out" pin="250,340" x="50" y="110"/>
+    </appear>
+    <comp lib="0" loc="(200,300)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="label" val="coil_L"/>
+    </comp>
+    <comp lib="0" loc="(200,320)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="label" val="coil_R"/>
+    </comp>
+    <comp lib="0" loc="(250,280)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="label" val="C1"/>
+      <a name="output" val="true"/>
+    </comp>
+    <comp lib="0" loc="(250,340)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="label" val="C2"/>
+      <a name="output" val="true"/>
+    </comp>
+    <comp lib="0" loc="(280,270)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="facing" val="west"/>
+      <a name="label" val="NC1"/>
+    </comp>
+    <comp lib="0" loc="(280,290)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="facing" val="west"/>
+      <a name="label" val="NO1"/>
+    </comp>
+    <comp lib="0" loc="(280,330)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="facing" val="west"/>
+      <a name="label" val="NC2"/>
+    </comp>
+    <comp lib="0" loc="(280,350)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="facing" val="west"/>
+      <a name="label" val="NO2"/>
+    </comp>
+    <comp lib="1" loc="(250,310)" name="XOR Gate">
+      <a name="size" val="30"/>
+    </comp>
+    <comp lib="2" loc="(250,280)" name="Multiplexer">
+      <a name="facing" val="west"/>
+    </comp>
+    <comp lib="2" loc="(250,340)" name="Multiplexer">
+      <a name="facing" val="west"/>
+      <a name="selloc" val="tr"/>
+    </comp>
+    <wire from="(200,300)" to="(210,300)"/>
+    <wire from="(200,320)" to="(210,320)"/>
+    <wire from="(250,310)" to="(270,310)"/>
+    <wire from="(270,300)" to="(270,310)"/>
+    <wire from="(270,310)" to="(270,320)"/>
   </circuit>
   <circuit name="D_Register">
     <a name="appearance" val="custom"/>
@@ -350,10 +922,10 @@
       <a name="facing" val="west"/>
       <a name="label" val="B"/>
     </comp>
-    <comp lib="13" loc="(190,140)" name="DPDT_CICO"/>
     <comp lib="8" loc="(185,55)" name="Text">
       <a name="text" val="Half Adder Relay equivalent"/>
     </comp>
+    <comp loc="(190,140)" name="DPDT_CICO"/>
     <wire from="(150,120)" to="(160,120)"/>
     <wire from="(150,160)" to="(160,160)"/>
     <wire from="(150,90)" to="(160,90)"/>
@@ -422,7 +994,7 @@
       <a name="facing" val="west"/>
       <a name="label" val="CI"/>
     </comp>
-    <comp lib="13" loc="(240,190)" name="DPDT_COCO">
+    <comp loc="(240,190)" name="DPDT_COCO">
       <a name="facing" val="west"/>
     </comp>
     <wire from="(190,160)" to="(200,160)"/>
@@ -687,9 +1259,6 @@
     <comp lib="1" loc="(380,490)" name="OR Gate">
       <a name="size" val="30"/>
     </comp>
-    <comp lib="13" loc="(350,410)" name="SPDT_CO">
-      <a name="facing" val="west"/>
-    </comp>
     <comp lib="8" loc="(360,465)" name="Text">
       <a name="font" val="SansSerif plain 11"/>
       <a name="text" val="Relay logic invalid for ~SUB &amp; ~ADD"/>
@@ -699,6 +1268,9 @@
       <a name="text" val="Output Available"/>
     </comp>
     <comp loc="(240,280)" name="MUX"/>
+    <comp loc="(350,410)" name="SPDT_CO">
+      <a name="facing" val="west"/>
+    </comp>
     <comp loc="(390,300)" name="ADD"/>
     <wire from="(210,270)" to="(220,270)"/>
     <wire from="(210,290)" to="(220,290)"/>
@@ -745,12 +1317,12 @@
       <ellipse cx="99" cy="60" rx="2" ry="2" stroke="#000000"/>
       <ellipse cx="100" cy="80" rx="2" ry="2" stroke="#000000"/>
       <circ-anchor facing="east" x="110" y="70"/>
-      <circ-port dir="in" pin="230,790" x="110" y="100"/>
       <circ-port dir="in" pin="400,760" x="90" y="60"/>
       <circ-port dir="in" pin="400,790" x="90" y="80"/>
-      <circ-port dir="out" pin="140,790" x="130" y="70"/>
+      <circ-port dir="in" pin="410,830" x="110" y="100"/>
+      <circ-port dir="out" pin="140,830" x="130" y="70"/>
     </appear>
-    <comp lib="0" loc="(140,790)" name="Pin">
+    <comp lib="0" loc="(140,830)" name="Pin">
       <a name="appearance" val="NewPins"/>
       <a name="output" val="true"/>
       <a name="radix" val="16"/>
@@ -760,11 +1332,6 @@
       <a name="fanout" val="8"/>
       <a name="incoming" val="8"/>
       <a name="spacing" val="8"/>
-    </comp>
-    <comp lib="0" loc="(230,790)" name="Pin">
-      <a name="appearance" val="NewPins"/>
-      <a name="facing" val="north"/>
-      <a name="label" val="S"/>
     </comp>
     <comp lib="0" loc="(310,170)" name="Ground"/>
     <comp lib="0" loc="(310,330)" name="Ground"/>
@@ -798,12 +1365,17 @@
       <a name="radix" val="16"/>
       <a name="width" val="8"/>
     </comp>
-    <comp lib="13" loc="(280,220)" name="DPDT_COCO"/>
-    <comp lib="13" loc="(280,380)" name="DPDT_COCO"/>
-    <comp lib="13" loc="(280,540)" name="DPDT_COCO"/>
-    <comp lib="13" loc="(280,700)" name="DPDT_COCO"/>
-    <wire from="(140,790)" to="(180,790)"/>
-    <wire from="(180,750)" to="(180,790)"/>
+    <comp lib="0" loc="(410,830)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="facing" val="west"/>
+      <a name="label" val="S"/>
+    </comp>
+    <comp loc="(280,220)" name="DPDT_COCO"/>
+    <comp loc="(280,380)" name="DPDT_COCO"/>
+    <comp loc="(280,540)" name="DPDT_COCO"/>
+    <comp loc="(280,700)" name="DPDT_COCO"/>
+    <wire from="(140,830)" to="(180,830)"/>
+    <wire from="(180,750)" to="(180,830)"/>
     <wire from="(200,180)" to="(200,200)"/>
     <wire from="(200,200)" to="(250,200)"/>
     <wire from="(200,240)" to="(200,260)"/>
@@ -826,8 +1398,9 @@
     <wire from="(230,330)" to="(250,330)"/>
     <wire from="(230,490)" to="(230,650)"/>
     <wire from="(230,490)" to="(250,490)"/>
-    <wire from="(230,650)" to="(230,790)"/>
+    <wire from="(230,650)" to="(230,830)"/>
     <wire from="(230,650)" to="(250,650)"/>
+    <wire from="(230,830)" to="(410,830)"/>
     <wire from="(300,170)" to="(310,170)"/>
     <wire from="(300,190)" to="(320,190)"/>
     <wire from="(300,210)" to="(330,210)"/>
@@ -948,10 +1521,10 @@
       <a name="radix" val="16"/>
       <a name="width" val="8"/>
     </comp>
-    <comp lib="13" loc="(280,220)" name="DPDT_CICI"/>
-    <comp lib="13" loc="(280,380)" name="DPDT_CICI"/>
-    <comp lib="13" loc="(280,540)" name="DPDT_CICI"/>
-    <comp lib="13" loc="(280,700)" name="DPDT_CICI"/>
+    <comp loc="(280,220)" name="DPDT_CICI"/>
+    <comp loc="(280,380)" name="DPDT_CICI"/>
+    <comp loc="(280,540)" name="DPDT_CICI"/>
+    <comp loc="(280,700)" name="DPDT_CICI"/>
     <wire from="(140,790)" to="(180,790)"/>
     <wire from="(180,750)" to="(180,790)"/>
     <wire from="(200,180)" to="(200,200)"/>
@@ -1105,7 +1678,7 @@
     <comp lib="1" loc="(310,420)" name="OR Gate">
       <a name="size" val="30"/>
     </comp>
-    <comp lib="13" loc="(340,370)" name="SPDT_CI"/>
+    <comp loc="(340,370)" name="SPDT_CI"/>
     <comp loc="(370,420)" name="Half_Add"/>
     <comp loc="(370,500)" name="Half_Add"/>
     <comp loc="(370,580)" name="Half_Add"/>
@@ -1239,7 +1812,6 @@
       <a name="label" val="CO"/>
       <a name="output" val="true"/>
     </comp>
-    <comp lib="13" loc="(600,530)" name="SPDT_CI"/>
     <comp lib="4" loc="(270,400)" name="D Flip-Flop">
       <a name="appearance" val="logisim_evolution"/>
       <a name="trigger" val="high"/>
@@ -1251,6 +1823,7 @@
     <comp loc="(370,510)" name="MUX"/>
     <comp loc="(470,470)" name="INC"/>
     <comp loc="(510,480)" name="MUX"/>
+    <comp loc="(600,530)" name="SPDT_CI"/>
     <comp loc="(660,470)" name="MUX"/>
     <wire from="(220,410)" to="(260,410)"/>
     <wire from="(220,490)" to="(260,490)"/>
