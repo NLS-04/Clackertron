@@ -4,14 +4,9 @@
 
   <lib desc="#Wiring" name="0">
     <tool name="Splitter">
-      <a name="bit1" val="0"/>
-      <a name="bit2" val="0"/>
-      <a name="bit3" val="0"/>
-      <a name="bit4" val="1"/>
-      <a name="bit5" val="1"/>
-      <a name="bit6" val="1"/>
-      <a name="bit7" val="1"/>
+      <a name="fanout" val="8"/>
       <a name="incoming" val="8"/>
+      <a name="spacing" val="8"/>
     </tool>
     <tool name="Pin">
       <a name="appearance" val="classic"/>
@@ -19,6 +14,9 @@
     <tool name="Probe">
       <a name="appearance" val="classic"/>
       <a name="facing" val="west"/>
+    </tool>
+    <tool name="Tunnel">
+      <a name="facing" val="north"/>
     </tool>
     <tool name="Pull Resistor">
       <a name="facing" val="north"/>
@@ -869,14 +867,14 @@
     <comp lib="4" loc="(540,600)" name="D Flip-Flop">
       <a name="appearance" val="logisim_evolution"/>
     </comp>
-    <comp lib="8" loc="(138,600)" name="Text">
+    <comp lib="8" loc="(135,600)" name="Text">
       <a name="text" val="max CLK = 2"/>
     </comp>
-    <comp lib="8" loc="(728,858)" name="Text">
+    <comp lib="8" loc="(725,855)" name="Text">
       <a name="halign" val="left"/>
       <a name="text" val="feed back signal for &quot;current&quot; based devices"/>
     </comp>
-    <comp lib="8" loc="(728,866)" name="Text">
+    <comp lib="8" loc="(725,865)" name="Text">
       <a name="halign" val="left"/>
       <a name="text" val="is non HiZ iff D is directly connected to the D-Latches"/>
       <a name="valign" val="center"/>
@@ -1435,7 +1433,7 @@
     <comp lib="13" loc="(350,410)" name="SPDT_CO">
       <a name="facing" val="west"/>
     </comp>
-    <comp lib="8" loc="(360,470)" name="Text">
+    <comp lib="8" loc="(366,473)" name="Text">
       <a name="font" val="SansSerif plain 11"/>
       <a name="text" val="Relay logic invalid for ~SUB &amp; ~ADD"/>
     </comp>
