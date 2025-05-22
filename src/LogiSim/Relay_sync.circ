@@ -18,6 +18,9 @@
     <tool name="Tunnel">
       <a name="facing" val="north"/>
     </tool>
+    <tool name="Pull Resistor">
+      <a name="facing" val="north"/>
+    </tool>
     <tool name="Constant">
       <a name="facing" val="west"/>
     </tool>
@@ -220,7 +223,9 @@
     </comp>
     <comp lib="1" loc="(480,290)" name="Controlled Buffer"/>
     <comp lib="1" loc="(500,270)" name="Controlled Buffer"/>
-    <comp lib="2" loc="(410,280)" name="Demultiplexer"/>
+    <comp lib="2" loc="(410,280)" name="Demultiplexer">
+      <a name="tristate" val="true"/>
+    </comp>
     <comp lib="4" loc="(240,350)" name="D Flip-Flop">
       <a name="appearance" val="logisim_evolution"/>
     </comp>
@@ -512,9 +517,12 @@
     <comp lib="1" loc="(500,390)" name="Controlled Buffer">
       <a name="control" val="left"/>
     </comp>
-    <comp lib="2" loc="(410,280)" name="Demultiplexer"/>
+    <comp lib="2" loc="(410,280)" name="Demultiplexer">
+      <a name="tristate" val="true"/>
+    </comp>
     <comp lib="2" loc="(410,400)" name="Demultiplexer">
       <a name="selloc" val="tr"/>
+      <a name="tristate" val="true"/>
     </comp>
     <comp lib="4" loc="(240,350)" name="D Flip-Flop">
       <a name="appearance" val="logisim_evolution"/>
@@ -689,7 +697,9 @@
     </comp>
     <comp lib="1" loc="(480,290)" name="Controlled Buffer"/>
     <comp lib="1" loc="(500,270)" name="Controlled Buffer"/>
-    <comp lib="2" loc="(410,280)" name="Demultiplexer"/>
+    <comp lib="2" loc="(410,280)" name="Demultiplexer">
+      <a name="tristate" val="true"/>
+    </comp>
     <comp lib="2" loc="(410,400)" name="Multiplexer">
       <a name="facing" val="west"/>
       <a name="selloc" val="tr"/>
@@ -875,6 +885,7 @@
     </comp>
     <comp lib="2" loc="(410,400)" name="Demultiplexer">
       <a name="selloc" val="tr"/>
+      <a name="tristate" val="true"/>
     </comp>
     <comp lib="4" loc="(240,350)" name="D Flip-Flop">
       <a name="appearance" val="logisim_evolution"/>
