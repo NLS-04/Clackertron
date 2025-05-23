@@ -4,7 +4,7 @@
 Relay based replication of the original SY6502 CPU by Motorola (with minimal differences for version 1.0).
 
 <p align="center" width="100%">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/8/8b/MOS_6502_die.jpg" alt="MOS 6502 silicon die" height="300px"/>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/archive/8/8b/20210903220037%21MOS_6502_die.jpg" alt="MOS 6502 silicon die" height="300px"/>
     <!-- <img src="https://upload.wikimedia.org/wikipedia/commons/3/38/Delta_Electronics_DPS-350FB_A_-_board_1_-_OEG_SDT-SS-112M_-_case_removed-3045.jpg" alt="MOS 6502 silicon die" height="300px"/> -->
     <img src="https://github.com/davidmjc/6502/blob/master/bd.png?raw=true" alt="6502 CPU Architecture" height="300px"/>
 </p>
