@@ -7,11 +7,12 @@ option(TEST OFF)
 include(CTest)
 include(FetchContent)
 
-add_definitions(-Wall -Wextra -Wpedantic)
+add_definitions(/W3)
 
-set(CMAKE_CXX_STANDARD 20 CACHE STRING "C++ Standard")
+set(CMAKE_CXX_STANDARD_REQUIRED 20 CACHE STRING "C++ Standard")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 message(STATUS "CMAKE_CXX_STANDARD: ${CMAKE_CXX_STANDARD}")
+message(STATUS "CMAKE_CXX_STANDARD_REQUIRED: ${CMAKE_CXX_STANDARD_REQUIRED}")
 
 FetchContent_Declare(systemc
     GIT_REPOSITORY https://github.com/accellera-official/systemc.git
