@@ -1,0 +1,238 @@
+#include "hysteresis.h"
+
+namespace hysteresis {
+using progress_t = HysteresisBase::progress_t;
+using Direction = HysteresisBase::Direction;
+using EventType = HysteresisBase::EventType;
+
+//------------------------------------------------------------------------------
+// HysteresisBase
+//------------------------------------------------------------------------------
+
+void HysteresisBase::process() {
+    m_current_state_fn = &HysteresisBase::phase_idle_low; // start in idle low state
+    output.write(false); // initialize output to low
+
+    while ( true ) {
+        // call the current state function
+        (this->*m_current_state_fn)(); 
+    }
+}
+
+void HysteresisBase::phase_idle_low() {
+    // State 0: Idle low, wait for start event
+    wait(start); // wait for start event
+    m_progress = 0.0f; // reset progress at the start of each cycle
+    
+    // goto next phase
+    m_current_state_fn = &HysteresisBase::phase_ascending_trigger;
+}
+void HysteresisBase::phase_idle_high() {
+    // State 3: Idle high, wait for stop event
+    wait(stop); // wait for stop event
+    m_progress = 1.0f; // reset progress at the stop of each cycle
+    
+    // goto next phase
+    m_current_state_fn = &HysteresisBase::phase_descending_trigger;
+}
+
+template <HysteresisBase::Direction dir>
+HysteresisBase::StateFunction HysteresisBase::phase_common(
+    EventType target_event, 
+    sc_event& trigger_event, 
+    StateFunction on_successful, 
+    StateFunction on_interrupted
+) {
+    // wait until either the target event point is reached or the trigger event is notified
+    sc_time t0 = sc_time_stamp();
+    wait( getTimeTo(dir, target_event, m_progress), trigger_event | reset );
+    sc_time elapsed = sc_time_stamp() - t0;
+
+    m_progress = getProgressAt(dir, elapsed, m_progress);
+    
+    bool progress_reached = false;
+    if constexpr ( dir == Direction::ASCENDING ) {
+        progress_reached = m_progress >= getProgressAt(dir, target_event);
+    } else if constexpr ( dir == Direction::DESCENDING ) {
+        progress_reached = m_progress <= getProgressAt(dir, target_event);
+    }
+    
+    if ( reset.triggered() ) {
+        // reset event triggered during the transition, go back to idle low state immediately
+        output.write(false); // reset output to low
+        return &HysteresisBase::phase_idle_low;
+    }
+
+    if ( trigger_event.triggered() ) {
+        // stop event triggered before reaching state flip point, start descending immediately
+        return on_interrupted;
+    }
+    
+    if ( progress_reached ) {
+        if ( target_event == EventType::STATE_FLIP ) {
+            output.write( dir == Direction::ASCENDING ); // active if ascending, otherwise deactivate
+        }
+        return on_successful;
+    }
+    
+    SC_REPORT_FATAL(this->name(), "Encountered unexpected state in hysteresis phase_common()");
+    return nullptr; // should never reach here
+}
+
+// template <>
+// bool HysteresisBase::phase_common<HysteresisBase::Direction::ASCENDING>(
+//     EventType target_event, 
+//     sc_event& trigger_event
+// );
+// template <>
+// bool HysteresisBase::phase_common<HysteresisBase::Direction::DESCENDING>(
+//     EventType target_event, 
+//     sc_event& trigger_event
+// );
+
+void HysteresisBase::phase_ascending_trigger() {
+    // State 1: Ascending until the ascending state flip point
+    m_current_state_fn = phase_common<Direction::ASCENDING>(
+        EventType::STATE_FLIP, 
+        stop, 
+        &HysteresisBase::phase_ascending_complete, 
+        &HysteresisBase::phase_descending_complete
+    );
+}
+void HysteresisBase::phase_ascending_complete() {
+    // State 2: Ascending until reaching the completion point
+    m_current_state_fn = phase_common<Direction::ASCENDING>(
+        EventType::COMPLETED, 
+        stop, 
+        &HysteresisBase::phase_idle_high, 
+        &HysteresisBase::phase_descending_trigger
+    );
+}
+void HysteresisBase::phase_descending_trigger() {
+    // State 4: Descending until the descending state flip point
+    m_current_state_fn = phase_common<Direction::DESCENDING>(
+        EventType::STATE_FLIP, 
+        start, 
+        &HysteresisBase::phase_descending_complete, 
+        &HysteresisBase::phase_ascending_complete
+    );
+}
+void HysteresisBase::phase_descending_complete() {
+    // State 5: Descending until reaching the completion point
+    m_current_state_fn = phase_common<Direction::DESCENDING>(
+        EventType::COMPLETED, 
+        start, 
+        &HysteresisBase::phase_idle_low, 
+        &HysteresisBase::phase_ascending_trigger
+    );
+}
+
+
+//------------------------------------------------------------------------------
+// LinearHysteresis
+//------------------------------------------------------------------------------
+
+progress_t LinearHysteresis::getProgressAt(Direction dir, const sc_time& elapsed, progress_t progress) const {
+    sc_time total_time = (dir == Direction::ASCENDING) ? m_time_ascend : m_time_descend;
+    
+    if (total_time == SC_ZERO_TIME) {
+        return (dir == Direction::ASCENDING) ? 1.0f : 0.0f; // instant transition
+    }
+    
+    progress_t new_progress = progress + elapsed.to_double() / total_time.to_double();
+    return std::clamp(new_progress, 0.0f, 1.0f);
+}
+progress_t LinearHysteresis::getProgressAt(Direction dir, EventType event) const {
+    static const progress_t LUT[2 /*EventType*/][2 /*Direction*/] = {
+        // ASCENDING             , DESCENDING
+        { m_progress_ascend_flip, m_progress_descend_flip }, // STATE_FLIP
+        { 0.0f                  , 1.0f                    }  // COMPLETED
+    };
+
+    return LUT[static_cast<size_t>(event)][static_cast<size_t>(dir)];
+}
+sc_time LinearHysteresis::getTimeTo(Direction dir, EventType event, progress_t progress) const {
+    sc_time total_time = (dir == Direction::ASCENDING) ? m_time_ascend : m_time_descend;
+    progress_t target_progress = getProgressAt(dir, event);
+    
+    if (progress >= target_progress) {
+        SC_REPORT_WARNING("Hysteresis", "Already at or past target event");
+        return SC_ZERO_TIME; // already at or past the target progress
+    }
+    
+    progress_t remaining_progress = target_progress - progress;
+    return remaining_progress * total_time;
+}
+
+
+//------------------------------------------------------------------------------
+// ExponentialHysteresis
+//------------------------------------------------------------------------------
+
+progress_t ExponentialHysteresis::getProgressAt(Direction dir, const sc_time& elapsed, progress_t progress) const {
+    sc_time reference_time = inverse_progress_function(dir, progress);
+    sc_time now = reference_time + elapsed;
+    return progress_function(dir, now);
+}
+progress_t ExponentialHysteresis::getProgressAt(Direction dir, EventType event) const {
+    static const progress_t LUT[2 /*EventType*/][2 /*Direction*/] = {
+        // ASCENDING             , DESCENDING
+        { m_progress_ascend_flip, m_progress_descend_flip }, // STATE_FLIP
+        { 0.0f                  , 1.0f                    }  // COMPLETED
+    };
+
+    return LUT[static_cast<size_t>(event)][static_cast<size_t>(dir)];
+}
+sc_time ExponentialHysteresis::getTimeTo(Direction dir, EventType event, progress_t progress) const {
+    progress_t target_progress = getProgressAt(dir, event);
+    
+    if (progress >= target_progress) {
+        SC_REPORT_WARNING("Hysteresis", "Already at or past target event");
+        return SC_ZERO_TIME; // already at or past the target progress
+    }
+
+    sc_time delta_time = time_between_progress(dir, progress, target_progress);
+    return delta_time;
+}
+
+inline progress_t ExponentialHysteresis::progress_function(Direction dir, const sc_time& t) const {
+    if (t <= SC_ZERO_TIME) {
+        SC_REPORT_WARNING("Hysteresis", "Non-positive time input to progress function, returning completed state");
+        return (dir == Direction::ASCENDING) ? 0.0f : 1.0f; // initial state
+    }
+
+    float exp = std::exp( -(t / mean_life_time) );
+    
+    // Apply saturation
+    if (dir == Direction::ASCENDING) {
+        float q = 1.0f - exp;
+        return (q >= m_saturation_cutoff) ? 1.0f : q;
+    } else {
+        float q = exp;
+        return (q <= 1.0f - m_saturation_cutoff) ? 0.0f : q;
+    }
+}
+inline sc_time ExponentialHysteresis::inverse_progress_function(Direction dir, progress_t p) const {
+    if (dir == Direction::ASCENDING) {
+        if (p >= m_saturation_cutoff) {
+            return m_saturation_time; // return saturation time if progress is at or beyond cutoff
+        }
+        return (-1) * mean_life_time * std::log(1.0f - p);
+    } else {
+        if (p <= 1.0f - m_saturation_cutoff) {
+            return m_saturation_time; // return saturation time if progress is at or beyond cutoff
+        }
+        return (-1) * mean_life_time * std::log(p);
+    }
+}
+inline sc_time ExponentialHysteresis::time_between_progress(Direction dir, progress_t start, progress_t end) const {
+    sc_time t_start = inverse_progress_function(dir, start);
+    sc_time t_end = inverse_progress_function(dir, end);
+    sc_time dt = t_end - t_start;
+    return (dt > SC_ZERO_TIME) ? dt : SC_ZERO_TIME; // ensure non-negative time
+}
+
+
+
+
+}; // namespace hysteresis
