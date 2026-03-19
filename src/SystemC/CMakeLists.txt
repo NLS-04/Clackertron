@@ -7,8 +7,13 @@ option(TEST OFF)
 include(CTest)
 include(FetchContent)
 
-add_definitions(/W3)
+if (MSVC)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W3 /std:c++20")
+else()
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic")
+endif()
 
+set(CMAKE_CXX_STANDARD 20 CACHE STRING "C++ Standard")
 set(CMAKE_CXX_STANDARD_REQUIRED 20 CACHE STRING "C++ Standard")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 message(STATUS "CMAKE_CXX_STANDARD: ${CMAKE_CXX_STANDARD}")
@@ -31,10 +36,10 @@ target_link_libraries(clackertron
   SystemC::systemc
 )
 
-if(TEST)
-  enable_testing()
-  add_subdirectory(tests)
-endif()
+# if(TEST)
+message(STATUS "Tests enabled")
+add_subdirectory(test)
+# endif()
 
 
 if(ARTIFACTS_ENABLE_AMS)

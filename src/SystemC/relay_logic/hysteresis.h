@@ -6,12 +6,12 @@
 namespace hysteresis {
 using namespace sim;
 
-class HysteresisBase : public sc_behavior {
+class HysteresisBase: public sc_behavior {
 public:
-    sc_event start;      // event to start ascend of hysteresis
-    sc_event stop;       // event to stop ascend of hysteresis, i.e. start descend of hysteresis
-    sc_event reset;      // event to reset hysteresis to initial state
-    sc_out<bool> output; // output signal indicating whether the hysteresis is high or low
+    sc_event trigger_ascend;  // event to start ascend of hysteresis
+    sc_event trigger_descend; // event to start descend of hysteresis, i.e. stop ascend of hysteresis
+    sc_event reset;           // event to reset hysteresis to initial state
+    sc_port<sc_signal_out_if<bool>, 0, SC_ZERO_OR_MORE_BOUND> output; // output signal indicating whether the hysteresis is high or low
 
 public:
     typedef float progress_t; // progress indicator type, normalized to [0.0, 1.0]
@@ -56,18 +56,25 @@ private:
     void phase_ascending_complete();
     void phase_descending_trigger();
     void phase_descending_complete();
+
+protected:
+    SC_CTOR(HysteresisBase) : m_current_state_fn(&HysteresisBase::phase_idle_low), m_progress(0.0f) {
+        SC_THREAD(process);
+    }
 };
 
 
 class LinearHysteresis : public HysteresisBase {
 public:
-    SC_CTOR( LinearHysteresis,
+    LinearHysteresis(
+        sc_module_name name,
         sc_time ascend, 
         sc_time descend, 
         progress_t flip_up=1.0f,    // default to fully flip at the end of the ascend phase
         progress_t flip_down=0.0f   // default to fully flip at the end of the descend phase
     ) 
-    : m_progress_ascend_flip(flip_up)
+    : HysteresisBase(name)
+    , m_progress_ascend_flip(flip_up)
     , m_progress_descend_flip(flip_down)
     , m_time_ascend(ascend)
     , m_time_descend(descend)
@@ -93,13 +100,15 @@ private:
 
 class ExponentialHysteresis : public HysteresisBase {
 public:
-    SC_CTOR( ExponentialHysteresis,
+    ExponentialHysteresis(
+        sc_module_name name,
         sc_time mean_life_time,               // inverse of the exponential rate
         progress_t saturation_cutoff = 0.99f, // progress value at which the state is considered fully saturated, i.e. completeted ascend
         progress_t flip_up=1.0f,
         progress_t flip_down=0.0f
     ) 
-    : m_progress_ascend_flip(flip_up)
+    : HysteresisBase(name)
+    , m_progress_ascend_flip(flip_up)
     , m_progress_descend_flip(flip_down)
     , mean_life_time(mean_life_time)
     , m_saturation_cutoff(saturation_cutoff)
@@ -112,6 +121,16 @@ public:
         sc_assert(flip_up > flip_down); // to ensure proper hysteresis behavior
     }
 
+    ExponentialHysteresis(
+        sc_module_name name,
+        progress_t saturation_cutoff, // progress value at which the state is considered fully saturated, i.e. completeted ascend
+        sc_time saturation_time,      // time at which the progress reaches saturation_cutoff
+        progress_t flip_up=1.0f,
+        progress_t flip_down=0.0f
+    ) 
+    : ExponentialHysteresis(name, mean_life_time_from_cutoff(saturation_cutoff, saturation_time), saturation_cutoff, flip_up, flip_down)
+    {}
+
 protected:
     progress_t getProgressAt(Direction dir, const sc_time& elapsed, progress_t progress) const override;
     progress_t getProgressAt(Direction dir, EventType event) const override;
@@ -121,6 +140,7 @@ private:
     inline progress_t progress_function(Direction dir, const sc_time& t) const;
     inline sc_time inverse_progress_function(Direction dir, progress_t p) const;
     inline sc_time time_between_progress(Direction dir, progress_t start, progress_t end) const;
+    inline sc_time mean_life_time_from_cutoff(progress_t cutoff, sc_time saturation_time) const;
 
 
     sc_time mean_life_time; // inverse of the exponential rate

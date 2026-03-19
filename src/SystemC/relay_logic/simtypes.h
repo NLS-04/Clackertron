@@ -24,6 +24,7 @@ struct RelayValue {
     // int fan_out = INF_FANOUT; // number of max fan-out connections this relay can drive
     
     bool operator==(RelayValue const&) const = default;
+    bool operator!=(RelayValue const&) const = default;
 };
 
 

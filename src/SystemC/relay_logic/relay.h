@@ -1,12 +1,7 @@
 #pragma once
 
 #include "systemc.h"
-
-namespace sim {
-
-
-} // namespace sim
-
+#include "simtypes.h"
 
 namespace relay_logic {
 using namespace sim;
@@ -25,7 +20,7 @@ private:
     sc_event valueChangedEvent;
 
     public:
-    RelayValue_Signal() {}
+    RelayValue_Signal() noexcept {}
 
     RelayValue read() const override {
         return currentValue;
@@ -50,22 +45,45 @@ private:
     }
 };
 
-class RelayBase : public sc_module {
-public:
-    virtual void coil_change_event() = 0; // event triggered when the coil pins change states
 
-    RelayBase(sc_module_name name) : sc_module(name) {
-        SC_METHOD(coil_pin_event);
-        sensitive << coil[0] << coil[1];
-    }
 
-    sc_port<RelayValue_if> coil[2];
+// class Coil : public sc_module {
+// public:
+//     sc_port<RelayValue_if> pin[2]; // two coil pins
+//     sc_event coilChangeEvent; // event triggered when the coil pins change states
 
-protected:
-    void coil_pin_event() {
-        coil_change_event();
-    }
-};
+//     bool coilIsEnergized() const;
+
+//     Coil(sc_module_name name) : coilChangeEvent(name) {
+//         SC_METHOD(pinMethod);
+//         sensitive << pin[0] << pin[1];
+//     }
+
+// protected:
+//     sc_event pinChangeEvent; // internal event to detect pin changes
+
+// };
+
+
+
+
+
+// class RelayBase : public sc_module {
+// public:
+//     virtual void coil_change_event() = 0; // event triggered when the coil pins change states
+
+//     RelayBase(sc_module_name name) : sc_module(name) {
+//         SC_METHOD(coil_pin_event);
+//         sensitive << coil[0] << coil[1];
+//     }
+
+//     sc_port<RelayValue_if> coil[2];
+
+// protected:
+//     void coil_pin_event() {
+//         coil_change_event();
+//     }
+// };
 
 
 } // namespace relay_logic
